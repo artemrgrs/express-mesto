@@ -31,15 +31,30 @@ const deleteCard = (req, res) => {
       }
       res.status(200).send('Карточка удалена');
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id карточки' });
+      }
+      res.status(500).send(err);
+    });
 };
 
 const putLike = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true })
-    .then((card) => res.status(200).send(card))
-    .catch((err) => res.status(500).send(err));
+    .then((card) => {
+      if (!card) {
+        res.status(ERROR_VALIDATION).send({ message: 'Нет карточки по заданному id' });
+      }
+      res.status(200).send(card);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id карточки' });
+      }
+      res.status(500).send(err);
+    });
 };
 
 const deleteLike = (req, res) => {
@@ -48,8 +63,18 @@ const deleteLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
-    .catch((err) => res.status(500).send(err));
+    .then((card) => {
+      if (!card) {
+        res.status(ERROR_VALIDATION).send({ message: 'Нет карточки по заданному id' });
+      }
+      res.status(200).send(card);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id карточки' });
+      }
+      res.status(500).send(err);
+    });
 };
 
 module.exports = {

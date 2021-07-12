@@ -17,7 +17,12 @@ const getProfile = (req, res) => {
       }
       res.status(200).send(user);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id профиля' });
+      }
+      res.status(500).send(err);
+    });
 };
 
 const createUser = (req, res) => {
@@ -36,10 +41,17 @@ const updateUser = (req, res) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (!user) {
+        res.status(ERROR_NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
+      }
+      res.status(200).send(user);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_VALIDATION).send({ message: 'Данные не прошли валидацию' });
+      } else if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id профиля' });
       }
       res.status(500).send(err);
     });
@@ -49,10 +61,17 @@ const updateAvatar = (req, res) => {
   const { avatar } = { ...req.body };
 
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (!user) {
+        res.status(ERROR_NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
+      }
+      res.status(200).send(user);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_VALIDATION).send({ message: 'Данные не прошли валидацию' });
+      } else if (err.name === 'CastError') {
+        res.status(ERROR_VALIDATION).send({ message: 'Невалидный id профиля' });
       }
       res.status(500).send(err);
     });
