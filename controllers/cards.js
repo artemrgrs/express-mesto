@@ -45,7 +45,7 @@ const putLike = (req, res) => {
     { new: true })
     .then((card) => {
       if (!card) {
-        res.status(ERROR_VALIDATION).send({ message: 'Нет карточки по заданному id' });
+        res.status(ERROR_NOT_FOUND).send({ message: 'Нет карточки по заданному id' });
       }
       res.status(200).send(card);
     })
@@ -65,7 +65,7 @@ const deleteLike = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(ERROR_VALIDATION).send({ message: 'Нет карточки по заданному id' });
+        res.status(ERROR_NOT_FOUND).send({ message: 'Нет карточки по заданному id' });
       }
       res.status(200).send(card);
     })
