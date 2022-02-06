@@ -1,7 +1,7 @@
 class ValidationError extends Error {
   constructor(message) {
-    message = message || 'Данные не прошли валидацию';
-    super(message);
+    const errorMessage = message || 'Данные не прошли валидацию';
+    super(errorMessage);
     this.statusCode = 400;
   }
 }

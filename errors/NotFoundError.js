@@ -1,7 +1,7 @@
 class NotFoundError extends Error {
   constructor(message) {
-    message = message || 'Не найдено';
-    super(message);
+    const errorMessage = message || 'Не найдено';
+    super(errorMessage);
     this.statusCode = 404;
   }
 }

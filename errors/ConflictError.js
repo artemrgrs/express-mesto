@@ -1,7 +1,7 @@
 class ConflictError extends Error {
   constructor(message) {
-    message = message || 'Пользователь с таким email уже зарегистрирован';
-    super(message);
+    const errorMessage = message || 'Пользователь с таким email уже зарегистрирован';
+    super(errorMessage);
     this.statusCode = 409;
   }
 }

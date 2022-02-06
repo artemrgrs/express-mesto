@@ -1,7 +1,7 @@
 class ForbiddenError extends Error {
   constructor(message) {
-    message = message || 'Нет доступа';
-    super(message);
+    const errorMessage = message || 'Нет доступа';
+    super(errorMessage);
     this.statusCode = 403;
   }
 }

@@ -1,7 +1,7 @@
 class BadRequest extends Error {
   constructor(message) {
-    message = message || 'Указаны некорректные данные';
-    super(message);
+    const errorMessage = message || 'Указаны некорректные данные';
+    super(errorMessage);
     this.statusCode = 400;
   }
 }

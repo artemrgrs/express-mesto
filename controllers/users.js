@@ -5,7 +5,6 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const ValidationError = require('../errors/ValidationError');
-const BadRequest = require('../errors/BadRequest');
 const ConflictError = require('../errors/ConflictError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -25,13 +24,7 @@ const getMyProfile = (req, res, next) => {
       }
       res.status(200).send(user);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new NotFoundError('Невалидный id профиля'));
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 const getProfile = (req, res, next) => {
@@ -65,12 +58,14 @@ const updateUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError();
-      } else if (err.name === 'CastError') {
-        next(new ValidationError('Невалидный id профиля'));
+        next(new ValidationError());
       }
-    })
-    .catch(next);
+      if (err.name === 'CastError') {
+        next(new ValidationError('Невалидный id профиля'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateAvatar = (req, res, next) => {
@@ -86,12 +81,14 @@ const updateAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Указаны неверные данные');
-      } else if (err.name === 'CastError') {
-        throw new ValidationError('Невалидный id профиля');
+        next(new ValidationError('Указаны неверные данные'));
       }
-    })
-    .catch(next);
+      if (err.name === 'CastError') {
+        next(new ValidationError('Невалидный id профиля'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -108,16 +105,16 @@ const createUser = (req, res, next) => {
         throw new ConflictError();
       } else next(err);
     })
-    .then((user) => res.send(user))
+    .then(() => res.status(200).send({
+      data: {
+        name, about, avatar, email,
+      },
+    }))
     .catch(next);
 };
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    throw new BadRequest('Email или пароль отсутствует');
-  }
 
   User.findOne({ email }).select('+password')
     .then((user) => {
@@ -138,7 +135,8 @@ const login = (req, res, next) => {
               sameSite: true,
             })
             .send({ message: 'Успешно!' });
-        });
+        })
+        .catch(next);
     })
     .catch(next);
 };
