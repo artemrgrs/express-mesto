@@ -36,37 +36,12 @@ const deleteCard = (req, res, next) => {
       }
       Card.findByIdAndRemove(req.params.cardId)
         .then(() => {
-          res.status(200).send('Карточка удалена');
+          res.status(200).send({ message: 'Карточка удалена' });
         })
         .catch(next);
     })
     .catch(next);
 };
-
-// const deleteCard = (req, res, next) => {
-//   const owner = req.user._id;
-//   Card.findById(req.params.cardId)
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Запрашиваемая карточка не найдена');
-//       }
-//       Card.findByIdAndRemove(req.params.cardId)
-//         .then(() => {
-//           if (owner !== card.owner) {
-//             throw new ForbiddenError('Вы не можете удалить эту карточку');
-//           }
-//           res.status(200).send('Карточка удалена');
-//         })
-//         .catch((err) => {
-//           if (err.name === 'CastError') {
-//             next(new ValidationError('Невалидный id карточки'));
-//             return;
-//           }
-//           next(err);
-//         });
-//     })
-//     .catch(next);
-// };
 
 const putLike = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId,
