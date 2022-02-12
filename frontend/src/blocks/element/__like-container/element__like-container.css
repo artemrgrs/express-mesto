@@ -1,0 +1,8 @@
+.element__like-container {
+    margin: 0;
+    position: absolute;
+    bottom: 22px;
+    right: 20px;
+    max-width: 30px;
+    text-align: center;
+}

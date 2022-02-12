@@ -1,0 +1,16 @@
+.header__signout-button {
+    font-size: 18px;
+    line-height: 22px;
+    color: #A9A9A9;
+    margin-left: 24px;
+    padding: 0;
+    text-decoration: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.header__signout-button:hover {
+    opacity: .6;
+}

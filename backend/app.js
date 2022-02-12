@@ -12,6 +12,7 @@ const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const { validateUser, validateLogin } = require('./middlewares/requestValidation');
 
@@ -30,6 +31,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(cookieParser());
 app.use(bodyParser.json());
+
+app.use(cors);
 
 app.use(requestLogger);
 
