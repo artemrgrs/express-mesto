@@ -11,6 +11,7 @@ const cardRoutes = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error-handler');
 const NotFoundError = require('./errors/NotFoundError');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { validateUser, validateLogin } = require('./middlewares/requestValidation');
 
@@ -30,6 +31,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use(requestLogger);
+
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateUser, createUser);
 app.use('/', auth, usersRoutes);
@@ -37,6 +40,8 @@ app.use('/', auth, cardRoutes);
 app.use(auth, (req, res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
