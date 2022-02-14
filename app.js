@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://artemrgrs.nomoredomains.work',
+  origin: 'https://artemrgrs.nomoredomains.work',
   credentials: true,
 }));
 
