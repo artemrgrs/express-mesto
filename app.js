@@ -34,12 +34,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use(cors);
+// app.use(cors);
 
-// app.use(cors({
-//   origin: 'http://artemrgrs.nomoredomains.work',
-//   credentials: true,
-// }));
+app.use(cors({
+  origin: 'http://artemrgrs.nomoredomains.work',
+  credentials: true,
+}));
 
 app.use(requestLogger);
 
