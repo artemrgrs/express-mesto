@@ -6,8 +6,6 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-// const cors = require('cors');
-
 const usersRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 const auth = require('./middlewares/auth');
@@ -35,11 +33,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use(cors);
-
-// app.use(cors({
-//   origin: 'http://artemrgrs.nomoredomains.work',
-//   credentials: true,
-// }));
 
 app.use(requestLogger);
 
